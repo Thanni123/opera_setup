@@ -1,0 +1,38 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+description: Template for deploying a software.
+
+node_types:
+  spring_petclinic_type:
+    derived_from: tosca.nodes.SoftwareComponent
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            implementation:
+              primary: playbooks/install.yaml
+          delete:
+            implementation:
+              primary: playbooks/uninstall.yaml
+
+topology_template:
+  inputs:
+    cpus:
+      type: integer
+      description: Number of CPUs used from local PC.
+      constraints:
+        - valid_values: [ 1, 2, 4, 8 ]
+
+  node_templates:
+    my-workstation:
+      type: tosca.nodes.Compute
+      attributes:
+        private_address: localhost
+        public_address: localhost
+
+    spring_petclinic:
+      type: spring_petclinic_type
+      requirements:
+        - host: my-workstation
+
+

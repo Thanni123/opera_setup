@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Stop spring-petclinic
+      service:
+        name: spring-petclinic
+        enabled: no
+        state: stopped
+
+    - name: Uninstall spring-petclinic
+      package:
+        name: spring-petclinic
+        state: absent

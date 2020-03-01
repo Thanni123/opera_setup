@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install spring-petclinic
+      package:
+        name: spring-petclinic
+
+    - name: Start spring-petclinic
+      service:
+        name: spring-petclinic
+        enabled: yes
+        state: started
+
+    - name: Set attributes
+      set_stats:
+        data:
+          site_config_dir: /etc/spring-petclinic/conf.d
