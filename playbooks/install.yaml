@@ -1,12 +1,17 @@
 ---
 - hosts: all
   become: yes
+  #become_method: sudo
+  #become_user: root
+  #become_ask_pass: no
   tasks:
     - name: Install spring-petclinic
+      #sudo: yes
       package:
         name: spring-petclinic
 
     - name: Start spring-petclinic
+      #sudo: yes
       service:
         name: spring-petclinic
         enabled: yes
