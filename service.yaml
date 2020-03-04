@@ -32,8 +32,5 @@ topology_template:
 
     spring_petclinic:
       type: spring_petclinic_type
-      # properties:
-        # root_password: phong3194
-        # sudo: ALL=(ALL) NOPASSWD:ALL
       requirements:
         - host: my-workstation
