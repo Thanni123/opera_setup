@@ -5,32 +5,29 @@
     - name: Check that the the /usr/lib/jvm/java-8-openjdk-amd64 exists
       stat:
         path: /usr/lib/jvm/java-8-openjdk-amd64
-      tags: java
       register: java_result
 
     - name: Update apt-cache
       apt: update_cache=yes
-      tags: packages, java
       when: java_result.stat.exists == False
 
     - name: Install packages needed for installing spring-petclinic
       apt: pkg={{ item }}
       with_items:
         - openjdk-8-jdk
-      tags: packages, java
       when: java_result.stat.exists == False
 
-    - name: Clone spring-petclinic repository into /tmp
-      shell: git clone https://github.com/spring-projects/spring-petclinic.git
-      dest: /tmp/
-      tags: packages, spring-petclinic
+    - git:
+        repo: 'https://github.com/spring-projects/spring-petclinic.git'
+        dest: /tmp/git_repo/
 
     - name: Install spring-petclinic
-      shell: ./tmp/spring-petclinic/mvnw spring-boot:run
-      tags: packages, spring-petclinic
+      shell:
+        cmd: ./tmp/git_repo/spring_petclinic/mvnw spring-boot:run
+        #chdir: /tmp/git_repo/spring_petclinic/
 
     #- name: Remove tmp files used for spring-petclinic installation
     #  file: path={{ item }} state=absent
+    #  sudo: yes
     #  with_items:
     #    - /tmp/spring-petclinic
-    #  tags: packages, spring-petclinic
